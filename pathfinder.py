@@ -1,5 +1,6 @@
 from queue import Queue
 
+# Maze representation (ridhi)
 ridhi = [
     ["#", "#", "#", "#", "S", "#", "#", "#", "#", "#"],
     ["#", " ", "#", " ", " ", " ", " ", "#", " ", "#"],
@@ -13,45 +14,37 @@ ridhi = [
     ["#", "#", "X", "#", "#", "#", "#", "#", "#", "#"]
 ]
 
+# Display the maze
 def display_ridhi(ridhi):
-    ridhi_row = ''
     for row in ridhi:
-        for tile in row:
-            ridhi_row += ' ' + tile
-        print(ridhi_row)
-        ridhi_row = ''
+        print(" ".join(row))
 
+# Find the start/end node
 def find_node(ridhi, node):
-    ridhi_size = len(ridhi)
-    row_size = len(ridhi[0])
-    for row in range(ridhi_size):
-        for col in range(row_size):
+    for row in range(len(ridhi)):
+        for col in range(len(ridhi[0])):
             if ridhi[row][col] == node:
                 return (row, col)
-            
+
+# Transform maze to graph
 def transform_to_graph(ridhi):
     graph = {}
-    ridhi_size = len(ridhi)
-    row_size = len(ridhi[0])
-
-    for row in range(ridhi_size):
-        for col in range(row_size):
+    for row in range(len(ridhi)):
+        for col in range(len(ridhi[0])):
             if ridhi[row][col] != '#':
                 adj_nodes = []
-
-                if row+1 < ridhi_size and ridhi[row+1][col] != '#': # DOWN
+                if row+1 < len(ridhi) and ridhi[row+1][col] != '#':
                     adj_nodes.append((row+1, col))
-                if row-1 >= 0 and ridhi[row-1][col] != '#': # UP
+                if row-1 >= 0 and ridhi[row-1][col] != '#':
                     adj_nodes.append((row-1, col))
-                if col+1 < row_size and ridhi[row][col+1] != '#': # RIGHT
+                if col+1 < len(ridhi[0]) and ridhi[row][col+1] != '#':
                     adj_nodes.append((row, col+1))
-                if col-1 >= 0 and ridhi[row][col-1] != '#': # LEFT
+                if col-1 >= 0 and ridhi[row][col-1] != '#':
                     adj_nodes.append((row, col-1))
-
                 graph[(row, col)] = adj_nodes
-
     return graph
 
+# BFS Solver
 def solve_ridhi(ridhi, ridhi_graph, start_node, end_node):
     visited = []
     start_path = [start_node]
@@ -64,9 +57,15 @@ def solve_ridhi(ridhi, ridhi_graph, start_node, end_node):
 
         for node in neighbours:
             if node == end_node:
-                for coordinate in path:
-                    row, col = coordinate
-                    ridhi[row][col] = 'X'
+                final_path = path + [node]
+                # Mark path in maze
+                for (row, col) in final_path:
+                    if ridhi[row][col] not in ['S', 'X']:
+                        ridhi[row][col] = '*'
+                # Show path details
+                print("\nShortest Path Found ✅")
+                print("Path Coordinates:", final_path)
+                print("Path Length:", len(final_path)-1, "steps")
                 return ridhi
             
             if node not in visited:
@@ -74,9 +73,12 @@ def solve_ridhi(ridhi, ridhi_graph, start_node, end_node):
                 new_path = path + [node]
                 q.put(new_path)
 
+# Run the solver
 start_node = find_node(ridhi, 'S')
 end_node = find_node(ridhi, 'X')
 ridhi_graph = transform_to_graph(ridhi)
 
 solved_ridhi = solve_ridhi(ridhi, ridhi_graph, start_node, end_node)
+
+print("\nSolved Maze:")
 display_ridhi(ridhi)
