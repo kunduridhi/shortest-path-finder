@@ -5,7 +5,6 @@
 
 ---
 
-# Shortest Path Finder
 
 ## 1. Introduction
 Finding the shortest path between two points is one of the most fundamental problems in computer science and mathematics. Graph theory provides an efficient way to model real-world systems such as transportation networks, social networks, and computer communication networks.  
