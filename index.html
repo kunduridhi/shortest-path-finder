@@ -3,150 +3,141 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Four Innovators - Shortest Path Finder</title>
+  <title>Shortest Path Finder Project</title>
   <style>
     body {
-      font-family: "Segoe UI", sans-serif;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(135deg, #1e3c72, #2a5298);
+      color: #fff;
       margin: 0;
-      min-height: 100vh;
-      background: #121212; /* Dark professional background */
-      color: #e0e0e0;
+      padding: 0;
       display: flex;
       flex-direction: column;
       align-items: center;
+      justify-content: center;
+      min-height: 100vh;
     }
 
-    h1 { font-size: 2.5rem; margin: 20px 0; color: #00bcd4; }
-    h2 { margin: 10px 0 20px; color: #80deea; }
-
-    .section { width: 100%; display: flex; flex-direction: column; align-items: center; }
-    .hidden { display: none; }
-
-    .team {
-      background: #1f1f1f;
-      padding: 20px;
-      border-radius: 12px;
-      margin-bottom: 25px;
+    header {
       text-align: center;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+      margin-bottom: 20px;
     }
 
-    .team ul { list-style: none; padding: 0; margin: 0; }
-    .team li { padding: 6px 0; font-size: 16px; border-bottom: 1px solid #333; }
+    header img {
+      width: 150px;
+      margin-bottom: 10px;
+    }
 
-    .btn {
-      padding: 14px 24px;
-      margin-top: 20px;
-      background: linear-gradient(135deg, #00bcd4, #007c91);
+    h1 {
+      font-size: 2.5rem;
+      margin: 0;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .controls {
+      display: flex;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    button {
+      padding: 12px 20px;
       border: none;
-      border-radius: 10px;
+      border-radius: 8px;
+      background: linear-gradient(45deg, #ff512f, #dd2476);
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       cursor: pointer;
-      transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+      transition: transform 0.2s ease-in-out;
     }
-    .btn:hover { transform: scale(1.08); background: linear-gradient(135deg, #007c91, #00bcd4); }
 
-    .social-icons { margin-top: 20px; display: flex; gap: 18px; justify-content: center; }
-    .social-icons a {
-      font-size: 22px;
-      text-decoration: none;
-      color: #00bcd4;
-      background: #1f1f1f;
-      padding: 10px;
-      border-radius: 50%;
-      transition: 0.3s;
-      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
+    button:hover {
+      transform: scale(1.05);
     }
-    .social-icons a:hover { background: #007c91; transform: scale(1.2); color: #fff; }
 
-    /* Path Finder Styles */
-    .controls { margin: 15px 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 45px);
       grid-template-rows: repeat(10, 45px);
-      gap: 4px;
+      gap: 5px;
       margin-top: 20px;
-      padding: 15px;
-      background: #1f1f1f;
+      background: rgba(255, 255, 255, 0.1);
+      padding: 10px;
       border-radius: 15px;
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
+      backdrop-filter: blur(10px);
     }
-    .cell { width: 45px; height: 45px; background: #2c2c2c; border-radius: 8px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
-    .cell:hover { transform: scale(1.05); background: #3a3a3a; }
-    .cell.start { background: #00bcd4 !important; }
-    .cell.end { background: #ff5722 !important; }
-    .cell.path { background: #4caf50 !important; }
-    .cell.wall { background: #555 !important; }
 
-    footer { margin-top: 30px; text-align: center; color: #888; }
-    @media (max-width: 600px) {
-      .grid { grid-template-columns: repeat(10, 32px); grid-template-rows: repeat(10, 32px); padding: 10px; }
-      .cell { width: 32px; height: 32px; }
+    .cell {
+      width: 45px;
+      height: 45px;
+      background: rgba(255, 255, 255, 0.3);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .cell:hover {
+      transform: scale(1.05);
+      background: rgba(255, 255, 255, 0.6);
+    }
+
+    .cell.start { background: #4caf50; }
+    .cell.end { background: #f44336; }
+    .cell.path { background: #2196f3; }
+    .cell.wall { background: #212121; }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+      color: #bbb;
+    }
+
+    footer a {
+      color: #fff;
+      text-decoration: none;
+      font-size: 18px;
+      margin: 0 10px;
+    }
+
+    footer a:hover {
+      color: #ff512f;
     }
   </style>
 </head>
 <body>
 
-  <!-- Landing Section -->
-  <div id="landing" class="section">
-    <h1>🚀 Four Innovators</h1>
-    <h2>Shortest Path Finder Project</h2>
+  <header>
+    <img src="https://seeklogo.com/images/V/VIT-logo-622717E8A7-seeklogo.com.png" alt="VIT Vellore Logo">
+    <h1>Shortest Path Finder</h1>
+    <p>By Ridhi Kundu — Reg No: 24BDE0171</p>
+  </header>
 
-    <div class="team">
-      <h3>👩‍💻 Team Members</h3>
-      <ul>
-        <li>✨ Ridhi Kundu — Reg No: 24BDE0171</li>
-        <li>🚀 Member 2 — Reg No: (Add Here)</li>
-        <li>🎯 Member 3 — Reg No: (Add Here)</li>
-      </ul>
-    </div>
-
-    <button class="btn" onclick="showPathFinder()">Start Path Finder</button>
-
-    <div class="social-icons">
-      <a href="https://facebook.com" target="_blank">📘</a>
-      <a href="https://instagram.com" target="_blank">📸</a>
-      <a href="https://linkedin.com" target="_blank">💼</a>
-      <a href="https://github.com" target="_blank">🐙</a>
-    </div>
+  <div class="controls">
+    <button onclick="setMode('start')">Set Start</button>
+    <button onclick="setMode('end')">Set End</button>
+    <button onclick="setMode('wall')">Add Walls</button>
+    <button onclick="findPath()">Find Path</button>
+    <button onclick="resetGrid()">Reset</button>
   </div>
 
-  <!-- Path Finder Section -->
-  <div id="pathfinder" class="section hidden">
-    <div class="controls">
-      <button onclick="setMode('start')">Set Start</button>
-      <button onclick="setMode('end')">Set End</button>
-      <button onclick="setMode('wall')">Add Walls</button>
-      <button onclick="findPath()">Find Path</button>
-      <button onclick="resetGrid()">Reset</button>
-      <button onclick="backToLanding()">Back</button>
-    </div>
+  <div class="grid" id="grid"></div>
 
-    <div class="grid" id="grid"></div>
-  </div>
-
-  <footer>© 2025 Four Innovators | All Rights Reserved</footer>
+  <footer>
+    <p>Connect with us:</p>
+    <a href="https://facebook.com/vitvellore" target="_blank">Facebook</a>
+    <a href="https://instagram.com/vitvellore" target="_blank">Instagram</a>
+    <a href="https://linkedin.com/school/vitvellore" target="_blank">LinkedIn</a>
+    <a href="https://github.com/vitvellore" target="_blank">GitHub</a>
+  </footer>
 
   <script>
-    function showPathFinder() {
-      document.getElementById("landing").classList.add("hidden");
-      document.getElementById("pathfinder").classList.remove("hidden");
-    }
-    function backToLanding() {
-      document.getElementById("pathfinder").classList.add("hidden");
-      document.getElementById("landing").classList.remove("hidden");
-    }
-
-    // Grid Setup
     const gridEl = document.getElementById("grid");
     const rows = 10, cols = 10;
     let mode = "start", start = null, end = null;
     let cells = [];
 
+    // Initialize grid
     for (let r = 0; r < rows; r++) {
       cells[r] = [];
       for (let c = 0; c < cols; c++) {
@@ -160,41 +151,59 @@
       }
     }
 
-    function setMode(m) { mode = m; }
+    function setMode(m) {
+      mode = m;
+    }
+
     function handleCellClick(r, c) {
       const cell = cells[r][c];
+
       if (mode === "start") {
         if (start) start.classList.remove("start");
         start = cell;
         start.classList.remove("wall");
         start.classList.add("start");
-      } else if (mode === "end") {
+      } 
+      else if (mode === "end") {
         if (end) end.classList.remove("end");
         end = cell;
         end.classList.remove("wall");
         end.classList.add("end");
-      } else if (mode === "wall") {
-        if (cell !== start && cell !== end) cell.classList.toggle("wall");
+      } 
+      else if (mode === "wall") {
+        if (cell !== start && cell !== end) {
+          cell.classList.toggle("wall");
+        }
       }
     }
 
     function findPath() {
-      if (!start || !end) return alert("Set both start and end points first!");
+      if (!start || !end) {
+        alert("Set both start and end points first!");
+        return;
+      }
+
       document.querySelectorAll(".path").forEach(cell => cell.classList.remove("path"));
+
       const startPos = [parseInt(start.dataset.row), parseInt(start.dataset.col)];
       const endPos = [parseInt(end.dataset.row), parseInt(end.dataset.col)];
+
       const queue = [[...startPos, []]];
       const visited = new Set();
       visited.add(startPos.toString());
 
       while (queue.length > 0) {
         const [r, c, path] = queue.shift();
+
         if (r === endPos[0] && c === endPos[1]) {
           path.forEach(([pr, pc]) => {
-            if (cells[pr][pc] !== start && cells[pr][pc] !== end) cells[pr][pc].classList.add("path");
+            if (cells[pr][pc] !== start && cells[pr][pc] !== end) {
+              cells[pr][pc].classList.add("path");
+            }
           });
           return;
         }
+
         const directions = [[1,0],[-1,0],[0,1],[0,-1]];
         for (let [dr, dc] of directions) {
           const nr = r + dr, nc = c + dc;
@@ -209,13 +218,16 @@
           }
         }
       }
+
       alert("No path found!");
     }
 
     function resetGrid() {
       cells.flat().forEach(cell => cell.className = "cell");
-      start = null; end = null;
+      start = null;
+      end = null;
     }
   </script>
+
 </body>
 </html>
