@@ -6,45 +6,51 @@
   <title>Shortest Path Finder Project</title>
   <style>
     body {
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(135deg, #1e3c72, #2a5298);
-      color: #fff;
+      font-family: "Segoe UI", sans-serif;
       margin: 0;
-      padding: 0;
+      min-height: 100vh;
+      background: #121212; /* Professional dark theme */
+      color: #e0e0e0;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
-      min-height: 100vh;
     }
 
     header {
       text-align: center;
-      margin-bottom: 20px;
+      margin: 20px 0;
     }
 
     header img {
-      width: 150px;
+      width: 120px;
       margin-bottom: 10px;
     }
 
     h1 {
       font-size: 2.5rem;
       margin: 0;
-      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+      color: #00bcd4;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
+    }
+
+    p {
+      margin: 5px 0;
+      color: #aaa;
     }
 
     .controls {
       display: flex;
-      gap: 15px;
-      margin: 20px 0;
+      gap: 10px;
+      flex-wrap: wrap;
+      justify-content: center;
+      margin-bottom: 20px;
     }
 
     button {
-      padding: 12px 20px;
+      padding: 12px 18px;
       border: none;
       border-radius: 8px;
-      background: linear-gradient(45deg, #ff512f, #dd2476);
+      background: linear-gradient(45deg, #00bcd4, #007c91);
       color: #fff;
       font-size: 16px;
       font-weight: bold;
@@ -60,48 +66,42 @@
       display: grid;
       grid-template-columns: repeat(10, 45px);
       grid-template-rows: repeat(10, 45px);
-      gap: 5px;
-      margin-top: 20px;
-      background: rgba(255, 255, 255, 0.1);
+      gap: 4px;
+      margin-top: 10px;
       padding: 10px;
-      border-radius: 15px;
-      backdrop-filter: blur(10px);
+      background: #1f1f1f;
+      border-radius: 12px;
+      box-shadow: 0 5px 12px rgba(0,0,0,0.5);
     }
 
     .cell {
       width: 45px;
       height: 45px;
-      background: rgba(255, 255, 255, 0.3);
-      border-radius: 8px;
+      background: #2c2c2c;
+      border-radius: 6px;
       cursor: pointer;
       transition: background 0.3s, transform 0.2s;
     }
 
     .cell:hover {
       transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.6);
+      background: #3a3a3a;
     }
 
-    .cell.start { background: #4caf50; }
-    .cell.end { background: #f44336; }
-    .cell.path { background: #2196f3; }
-    .cell.wall { background: #212121; }
+    .cell.start { background: #00bcd4 !important; }
+    .cell.end { background: #ff5722 !important; }
+    .cell.path { background: #4caf50 !important; }
+    .cell.wall { background: #555 !important; }
 
     footer {
       margin-top: 30px;
       text-align: center;
-      color: #bbb;
+      color: #888;
     }
 
-    footer a {
-      color: #fff;
-      text-decoration: none;
-      font-size: 18px;
-      margin: 0 10px;
-    }
-
-    footer a:hover {
-      color: #ff512f;
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: repeat(10, 32px); grid-template-rows: repeat(10, 32px); }
+      .cell { width: 32px; height: 32px; }
     }
   </style>
 </head>
@@ -116,7 +116,7 @@
   <div class="controls">
     <button onclick="setMode('start')">Set Start</button>
     <button onclick="setMode('end')">Set End</button>
-    <button onclick="setMode('wall')">Add Walls</button>
+    <button onclick="setMode('wall')">Add/Remove Wall</button>
     <button onclick="findPath()">Find Path</button>
     <button onclick="resetGrid()">Reset</button>
   </div>
@@ -125,10 +125,10 @@
 
   <footer>
     <p>Connect with us:</p>
-    <a href="https://facebook.com/vitvellore" target="_blank">Facebook</a>
-    <a href="https://instagram.com/vitvellore" target="_blank">Instagram</a>
-    <a href="https://linkedin.com/school/vitvellore" target="_blank">LinkedIn</a>
-    <a href="https://github.com/vitvellore" target="_blank">GitHub</a>
+    <a href="https://facebook.com" target="_blank">Facebook</a> |
+    <a href="https://instagram.com" target="_blank">Instagram</a> |
+    <a href="https://linkedin.com" target="_blank">LinkedIn</a> |
+    <a href="https://github.com" target="_blank">GitHub</a>
   </footer>
 
   <script>
@@ -157,20 +157,17 @@
 
     function handleCellClick(r, c) {
       const cell = cells[r][c];
-
       if (mode === "start") {
         if (start) start.classList.remove("start");
         start = cell;
         start.classList.remove("wall");
         start.classList.add("start");
-      } 
-      else if (mode === "end") {
+      } else if (mode === "end") {
         if (end) end.classList.remove("end");
         end = cell;
         end.classList.remove("wall");
         end.classList.add("end");
-      } 
-      else if (mode === "wall") {
+      } else if (mode === "wall") {
         if (cell !== start && cell !== end) {
           cell.classList.toggle("wall");
         }
@@ -194,7 +191,6 @@
 
       while (queue.length > 0) {
         const [r, c, path] = queue.shift();
-
         if (r === endPos[0] && c === endPos[1]) {
           path.forEach(([pr, pc]) => {
             if (cells[pr][pc] !== start && cells[pr][pc] !== end) {
@@ -210,10 +206,10 @@
           if (
             nr >= 0 && nr < rows &&
             nc >= 0 && nc < cols &&
-            !visited.has([nr,nc].toString()) &&
+            !visited.has(`${nr},${nc}`) &&
             !cells[nr][nc].classList.contains("wall")
           ) {
-            visited.add([nr,nc].toString());
+            visited.add(`${nr},${nc}`);
             queue.push([nr, nc, [...path, [nr, nc]]]);
           }
         }
@@ -228,6 +224,5 @@
       end = null;
     }
   </script>
-
 </body>
 </html>
