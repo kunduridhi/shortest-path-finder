@@ -3,141 +3,148 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shortest Path Finder Project</title>
+  <title>Four Innovators - Shortest Path Finder</title>
   <style>
     body {
       font-family: "Segoe UI", sans-serif;
       margin: 0;
       min-height: 100vh;
-      background: #121212; /* Professional dark theme */
+      background: #121212;
       color: #e0e0e0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    header {
+    h1 { font-size: 2.5rem; margin: 20px 0; color: #00bcd4; }
+    h2 { margin: 10px 0 20px; color: #80deea; }
+
+    .section { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .hidden { display: none; }
+
+    .team {
+      background: #1f1f1f;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 25px;
       text-align: center;
-      margin: 20px 0;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
-    header img {
-      width: 120px;
-      margin-bottom: 10px;
-    }
+    .team ul { list-style: none; padding: 0; margin: 0; }
+    .team li { padding: 6px 0; font-size: 16px; border-bottom: 1px solid #333; }
 
-    h1 {
-      font-size: 2.5rem;
-      margin: 0;
-      color: #00bcd4;
-      text-shadow: 1px 1px 5px rgba(0,0,0,0.5);
-    }
-
-    p {
-      margin: 5px 0;
-      color: #aaa;
-    }
-
-    .controls {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    button {
-      padding: 12px 18px;
+    .btn {
+      padding: 14px 24px;
+      margin-top: 20px;
+      background: linear-gradient(135deg, #00bcd4, #007c91);
       border: none;
-      border-radius: 8px;
-      background: linear-gradient(45deg, #00bcd4, #007c91);
+      border-radius: 10px;
       color: #fff;
-      font-size: 16px;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
-      transition: transform 0.2s ease-in-out;
+      transition: all 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
+    .btn:hover { transform: scale(1.08); background: linear-gradient(135deg, #007c91, #00bcd4); }
 
-    button:hover {
-      transform: scale(1.05);
+    .social-icons { margin-top: 20px; display: flex; gap: 18px; justify-content: center; }
+    .social-icons a {
+      font-size: 22px;
+      text-decoration: none;
+      color: #00bcd4;
+      background: #1f1f1f;
+      padding: 10px;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
     }
+    .social-icons a:hover { background: #007c91; transform: scale(1.2); color: #fff; }
 
+    /* Path Finder Styles */
+    .controls { margin: 15px 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 45px);
       grid-template-rows: repeat(10, 45px);
       gap: 4px;
-      margin-top: 10px;
-      padding: 10px;
+      margin-top: 20px;
+      padding: 15px;
       background: #1f1f1f;
-      border-radius: 12px;
-      box-shadow: 0 5px 12px rgba(0,0,0,0.5);
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
     }
-
-    .cell {
-      width: 45px;
-      height: 45px;
-      background: #2c2c2c;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .cell:hover {
-      transform: scale(1.05);
-      background: #3a3a3a;
-    }
-
+    .cell { width: 45px; height: 45px; background: #2a2a2a; border-radius: 8px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    .cell:hover { transform: scale(1.05); background: #3f3f3f; }
     .cell.start { background: #00bcd4 !important; }
     .cell.end { background: #ff5722 !important; }
     .cell.path { background: #4caf50 !important; }
     .cell.wall { background: #555 !important; }
 
-    footer {
-      margin-top: 30px;
-      text-align: center;
-      color: #888;
-    }
-
+    footer { margin-top: 30px; text-align: center; color: #888; }
     @media (max-width: 600px) {
-      .grid { grid-template-columns: repeat(10, 32px); grid-template-rows: repeat(10, 32px); }
+      .grid { grid-template-columns: repeat(10, 32px); grid-template-rows: repeat(10, 32px); padding: 10px; }
       .cell { width: 32px; height: 32px; }
     }
   </style>
 </head>
 <body>
 
-  <header>
-    <img src="https://seeklogo.com/images/V/VIT-logo-622717E8A7-seeklogo.com.png" alt="VIT Vellore Logo">
-    <h1>Shortest Path Finder</h1>
-    <p>By Ridhi Kundu — Reg No: 24BDE0171</p>
-  </header>
+  <!-- Landing Section -->
+  <div id="landing" class="section">
+    <h1>🚀 Four Innovators</h1>
+    <h2>Shortest Path Finder Project</h2>
 
-  <div class="controls">
-    <button onclick="setMode('start')">Set Start</button>
-    <button onclick="setMode('end')">Set End</button>
-    <button onclick="setMode('wall')">Add/Remove Wall</button>
-    <button onclick="findPath()">Find Path</button>
-    <button onclick="resetGrid()">Reset</button>
+    <div class="team">
+      <h3>👩‍💻 Team Member</h3>
+      <ul>
+        <li>✨ Ridhi Kundu — Reg No: 24BDE0171</li>
+      </ul>
+    </div>
+
+    <button class="btn" onclick="showPathFinder()">Start Path Finder</button>
+
+    <div class="social-icons">
+      <a href="https://facebook.com" target="_blank">📘</a>
+      <a href="https://instagram.com" target="_blank">📸</a>
+      <a href="https://linkedin.com" target="_blank">💼</a>
+      <a href="https://github.com" target="_blank">🐙</a>
+    </div>
   </div>
 
-  <div class="grid" id="grid"></div>
+  <!-- Path Finder Section -->
+  <div id="pathfinder" class="section hidden">
+    <div class="controls">
+      <button onclick="setMode('start')">Set Start</button>
+      <button onclick="setMode('end')">Set End</button>
+      <button onclick="setMode('wall')">Add/Remove Wall</button>
+      <button onclick="findPath()">Find Path</button>
+      <button onclick="resetGrid()">Reset</button>
+      <button onclick="backToLanding()">Back</button>
+    </div>
 
-  <footer>
-    <p>Connect with us:</p>
-    <a href="https://facebook.com" target="_blank">Facebook</a> |
-    <a href="https://instagram.com" target="_blank">Instagram</a> |
-    <a href="https://linkedin.com" target="_blank">LinkedIn</a> |
-    <a href="https://github.com" target="_blank">GitHub</a>
-  </footer>
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <footer>© 2025 Four Innovators | All Rights Reserved</footer>
 
   <script>
+    function showPathFinder() {
+      document.getElementById("landing").classList.add("hidden");
+      document.getElementById("pathfinder").classList.remove("hidden");
+    }
+    function backToLanding() {
+      document.getElementById("pathfinder").classList.add("hidden");
+      document.getElementById("landing").classList.remove("hidden");
+    }
+
+    // Grid Setup
     const gridEl = document.getElementById("grid");
     const rows = 10, cols = 10;
     let mode = "start", start = null, end = null;
     let cells = [];
 
-    // Initialize grid
     for (let r = 0; r < rows; r++) {
       cells[r] = [];
       for (let c = 0; c < cols; c++) {
@@ -151,40 +158,33 @@
       }
     }
 
-    function setMode(m) {
-      mode = m;
-    }
+    function setMode(m) { mode = m; }
 
     function handleCellClick(r, c) {
       const cell = cells[r][c];
+
       if (mode === "start") {
         if (start) start.classList.remove("start");
         start = cell;
-        start.classList.remove("wall");
+        start.classList.remove("wall", "end");
         start.classList.add("start");
       } else if (mode === "end") {
         if (end) end.classList.remove("end");
         end = cell;
-        end.classList.remove("wall");
+        end.classList.remove("wall", "start");
         end.classList.add("end");
       } else if (mode === "wall") {
         if (cell !== start && cell !== end) {
-          cell.classList.toggle("wall");
+          cell.classList.toggle("wall"); // fixed wall toggle
         }
       }
     }
 
     function findPath() {
-      if (!start || !end) {
-        alert("Set both start and end points first!");
-        return;
-      }
-
+      if (!start || !end) return alert("Set both start and end points first!");
       document.querySelectorAll(".path").forEach(cell => cell.classList.remove("path"));
-
       const startPos = [parseInt(start.dataset.row), parseInt(start.dataset.col)];
       const endPos = [parseInt(end.dataset.row), parseInt(end.dataset.col)];
-
       const queue = [[...startPos, []]];
       const visited = new Set();
       visited.add(startPos.toString());
@@ -193,13 +193,10 @@
         const [r, c, path] = queue.shift();
         if (r === endPos[0] && c === endPos[1]) {
           path.forEach(([pr, pc]) => {
-            if (cells[pr][pc] !== start && cells[pr][pc] !== end) {
-              cells[pr][pc].classList.add("path");
-            }
+            if (cells[pr][pc] !== start && cells[pr][pc] !== end) cells[pr][pc].classList.add("path");
           });
           return;
         }
-
         const directions = [[1,0],[-1,0],[0,1],[0,-1]];
         for (let [dr, dc] of directions) {
           const nr = r + dr, nc = c + dc;
@@ -214,14 +211,12 @@
           }
         }
       }
-
       alert("No path found!");
     }
 
     function resetGrid() {
       cells.flat().forEach(cell => cell.className = "cell");
-      start = null;
-      end = null;
+      start = null; end = null;
     }
   </script>
 </body>
