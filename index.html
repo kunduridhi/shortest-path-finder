@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shortest Path Finder</title>
+  <title>Shortest Path Finder with Obstacles</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -19,6 +19,7 @@
     h1 {
       margin-bottom: 15px;
       color: #333;
+      text-align: center;
     }
 
     .grid {
@@ -26,6 +27,7 @@
       grid-template-columns: repeat(10, 40px);
       grid-template-rows: repeat(10, 40px);
       gap: 3px;
+      margin-top: 10px;
     }
 
     .cell {
@@ -40,12 +42,14 @@
     .cell.start { background: #4caf50; }
     .cell.end { background: #f44336; }
     .cell.path { background: #2196f3; }
+    .cell.wall { background: #333; }
 
     .controls {
       margin: 15px;
       display: flex;
       gap: 10px;
       flex-wrap: wrap;
+      justify-content: center;
     }
 
     button {
@@ -78,10 +82,11 @@
   </style>
 </head>
 <body>
-  <h1>Shortest Path Finder</h1>
+  <h1>Shortest Path Finder with Obstacles</h1>
   <div class="controls">
     <button onclick="setMode('start')">Set Start</button>
     <button onclick="setMode('end')">Set End</button>
+    <button onclick="setMode('wall')">Add Walls</button>
     <button onclick="findPath()">Find Path</button>
     <button onclick="resetGrid()">Reset</button>
   </div>
@@ -112,14 +117,24 @@
     }
 
     function handleCellClick(r, c) {
+      const cell = cells[r][c];
+
       if (mode === "start") {
         if (start) start.classList.remove("start");
-        start = cells[r][c];
+        start = cell;
+        start.classList.remove("wall"); // prevent wall overwrite
         start.classList.add("start");
-      } else if (mode === "end") {
+      } 
+      else if (mode === "end") {
         if (end) end.classList.remove("end");
-        end = cells[r][c];
+        end = cell;
+        end.classList.remove("wall");
         end.classList.add("end");
+      } 
+      else if (mode === "wall") {
+        if (cell !== start && cell !== end) {
+          cell.classList.toggle("wall");
+        }
       }
     }
 
@@ -154,7 +169,12 @@
         const directions = [[1,0],[-1,0],[0,1],[0,-1]];
         for (let [dr, dc] of directions) {
           const nr = r + dr, nc = c + dc;
-          if (nr >= 0 && nr < rows && nc >= 0 && nc < cols && !visited.has([nr,nc].toString())) {
+          if (
+            nr >= 0 && nr < rows &&
+            nc >= 0 && nc < cols &&
+            !visited.has([nr,nc].toString()) &&
+            !cells[nr][nc].classList.contains("wall")
+          ) {
             visited.add([nr,nc].toString());
             queue.push([nr, nc, [...path, [nr, nc]]]);
           }
