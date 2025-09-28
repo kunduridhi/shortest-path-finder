@@ -174,29 +174,36 @@
         end.classList.remove("wall", "start");
         end.classList.add("end");
       } else if (mode === "wall") {
-        if (cell !== start && cell !== end) {
-          cell.classList.toggle("wall"); // fixed wall toggle
-        }
+        if (cell !== start && cell !== end) cell.classList.toggle("wall");
       }
     }
 
-    function findPath() {
+    async function findPath() {
       if (!start || !end) return alert("Set both start and end points first!");
       document.querySelectorAll(".path").forEach(cell => cell.classList.remove("path"));
+
       const startPos = [parseInt(start.dataset.row), parseInt(start.dataset.col)];
       const endPos = [parseInt(end.dataset.row), parseInt(end.dataset.col)];
+
       const queue = [[...startPos, []]];
       const visited = new Set();
       visited.add(startPos.toString());
 
+      let found = false;
+
       while (queue.length > 0) {
         const [r, c, path] = queue.shift();
-        if (r === endPos[0] && c === endPos[1]) {
-          path.forEach(([pr, pc]) => {
-            if (cells[pr][pc] !== start && cells[pr][pc] !== end) cells[pr][pc].classList.add("path");
-          });
-          return;
+
+        if (!(cells[r][c] === start || cells[r][c] === end)) {
+          cells[r][c].classList.add("path");
+          await new Promise(resolve => setTimeout(resolve, 50));
         }
+
+        if (r === endPos[0] && c === endPos[1]) {
+          found = true;
+          break;
+        }
+
         const directions = [[1,0],[-1,0],[0,1],[0,-1]];
         for (let [dr, dc] of directions) {
           const nr = r + dr, nc = c + dc;
@@ -211,7 +218,8 @@
           }
         }
       }
-      alert("No path found!");
+
+      if (!found) alert("No path found!");
     }
 
     function resetGrid() {
