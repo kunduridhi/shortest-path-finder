@@ -3,86 +3,128 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shortest Path Finder with Obstacles</title>
+  <title>Shortest Path Finder Project</title>
   <style>
     body {
-      font-family: Arial, sans-serif;
+      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center;
+      justify-content: flex-start;
       min-height: 100vh;
       margin: 0;
-      background: #f4f4f9;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      color: #fff;
+      padding: 20px;
     }
 
     h1 {
-      margin-bottom: 15px;
-      color: #333;
+      margin: 10px 0;
+      font-size: 2rem;
       text-align: center;
+      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
     }
-
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(10, 40px);
-      grid-template-rows: repeat(10, 40px);
-      gap: 3px;
-      margin-top: 10px;
-    }
-
-    .cell {
-      width: 40px;
-      height: 40px;
-      background: #e0e0e0;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    .cell.start { background: #4caf50; }
-    .cell.end { background: #f44336; }
-    .cell.path { background: #2196f3; }
-    .cell.wall { background: #333; }
 
     .controls {
-      margin: 15px;
+      margin: 15px 0;
       display: flex;
-      gap: 10px;
+      gap: 12px;
       flex-wrap: wrap;
       justify-content: center;
     }
 
     button {
-      padding: 10px 15px;
+      padding: 12px 18px;
       border: none;
-      border-radius: 8px;
-      background: #333;
+      border-radius: 10px;
+      background: #222;
       color: #fff;
-      font-size: 14px;
+      font-size: 15px;
       cursor: pointer;
-      transition: 0.3s;
+      transition: all 0.3s ease;
       flex: 1 1 auto;
-      min-width: 120px;
+      min-width: 130px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.3);
     }
 
     button:hover {
-      background: #555;
+      background: #444;
+      transform: scale(1.05);
     }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(10, 45px);
+      grid-template-rows: repeat(10, 45px);
+      gap: 4px;
+      margin-top: 20px;
+      padding: 15px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+    }
+
+    .cell {
+      width: 45px;
+      height: 45px;
+      background: #e0e0e0;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .cell:hover {
+      transform: scale(1.05);
+      background: #d0d0d0;
+    }
+
+    .cell.start { background: #4caf50 !important; }
+    .cell.end { background: #f44336 !important; }
+    .cell.path { background: #2196f3 !important; }
+    .cell.wall { background: #222 !important; }
 
     @media (max-width: 600px) {
       .grid {
-        grid-template-columns: repeat(10, 30px);
-        grid-template-rows: repeat(10, 30px);
+        grid-template-columns: repeat(10, 32px);
+        grid-template-rows: repeat(10, 32px);
+        padding: 10px;
       }
       .cell {
-        width: 30px;
-        height: 30px;
+        width: 32px;
+        height: 32px;
       }
+    }
+
+    .team {
+      margin-top: 30px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 20px;
+      border-radius: 12px;
+      width: 80%;
+      max-width: 600px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
+    }
+
+    .team h2 {
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .team ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .team li {
+      padding: 8px 0;
+      font-size: 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.2);
     }
   </style>
 </head>
 <body>
   <h1>Shortest Path Finder with Obstacles</h1>
+
   <div class="controls">
     <button onclick="setMode('start')">Set Start</button>
     <button onclick="setMode('end')">Set End</button>
@@ -90,7 +132,17 @@
     <button onclick="findPath()">Find Path</button>
     <button onclick="resetGrid()">Reset</button>
   </div>
+
   <div class="grid" id="grid"></div>
+
+  <div class="team">
+    <h2>Project Members</h2>
+    <ul>
+      <li>Ridhi Kundu — Reg No: 24BDE0171</li>
+      <li>Member 2 — Reg No: (Add Here)</li>
+      <li>Member 3 — Reg No: (Add Here)</li>
+    </ul>
+  </div>
 
   <script>
     const gridEl = document.getElementById("grid");
@@ -122,7 +174,7 @@
       if (mode === "start") {
         if (start) start.classList.remove("start");
         start = cell;
-        start.classList.remove("wall"); // prevent wall overwrite
+        start.classList.remove("wall");
         start.classList.add("start");
       } 
       else if (mode === "end") {
@@ -144,7 +196,6 @@
         return;
       }
 
-      // Clear old path
       document.querySelectorAll(".path").forEach(cell => cell.classList.remove("path"));
 
       const startPos = [parseInt(start.dataset.row), parseInt(start.dataset.col)];
