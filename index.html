@@ -103,7 +103,7 @@
     <button class="btn" onclick="resetOutput()">Reset</button>
     <button class="btn" onclick="openModal()">About Algorithm</button>
 
-    <div id="output">Click "Start Path Finder" to run the algorithm.</div>
+    <div id="output">Click "Start Path Finder" to run.</div>
 
     <section class="team">
       <h2>Meet Our Team</h2>
@@ -149,58 +149,19 @@
     <div class="modal-content">
       <span class="close-btn" onclick="closeModal()">&times;</span>
       <h2>About the Algorithm</h2>
-      <p>This project demonstrates the <strong>Dijkstra’s Algorithm</strong>, a popular shortest path algorithm.</p>
-      <p>It finds the shortest path between nodes in a weighted graph, ensuring optimal results in routing and network problems.</p>
+      <p>This project demonstrates a <strong>Shortest Path Finder</strong>.  
+         You can design your own graph, add nodes, and implement any algorithm (like Dijkstra, BFS, or A*).</p>
     </div>
   </div>
 
   <script>
     function startPathFinder() {
-      // Simple example graph
-      const graph = {
-        A: {B: 2, C: 5},
-        B: {C: 1, D: 4},
-        C: {D: 2},
-        D: {}
-      };
-
-      function dijkstra(start, end) {
-        let distances = {}, prev = {}, pq = [];
-        for (let node in graph) {
-          distances[node] = Infinity;
-          prev[node] = null;
-        }
-        distances[start] = 0;
-        pq.push([start, 0]);
-
-        while (pq.length) {
-          pq.sort((a,b)=>a[1]-b[1]);
-          let [current, dist] = pq.shift();
-          if (current === end) break;
-
-          for (let neighbor in graph[current]) {
-            let newDist = dist + graph[current][neighbor];
-            if (newDist < distances[neighbor]) {
-              distances[neighbor] = newDist;
-              prev[neighbor] = current;
-              pq.push([neighbor, newDist]);
-            }
-          }
-        }
-
-        let path = [], u = end;
-        while (u) { path.unshift(u); u = prev[u]; }
-        return {distance: distances[end], path};
-      }
-
-      const result = dijkstra("A", "D");
       document.getElementById("output").innerHTML = 
-        `<strong>Shortest Path from A to D:</strong> ${result.path.join(" → ")} <br> 
-         <strong>Distance:</strong> ${result.distance}`;
+        "🚀 Path Finder started! (Here you can add your own logic to display directions or shortest path)";
     }
 
     function resetOutput() {
-      document.getElementById("output").innerHTML = "Click \"Start Path Finder\" to run the algorithm.";
+      document.getElementById("output").innerHTML = "Click \"Start Path Finder\" to run.";
     }
 
     function openModal() {
