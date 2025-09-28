@@ -3,56 +3,66 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Shortest Path Finder Project</title>
+  <title>Four Innovators - Shortest Path Finder</title>
   <style>
     body {
-      font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      font-family: "Segoe UI", sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: linear-gradient(135deg, #ff512f, #dd2476);
+      color: #fff;
       display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: flex-start;
-      min-height: 100vh;
-      margin: 0;
-      background: linear-gradient(135deg, #6a11cb, #2575fc);
-      color: #fff;
+    }
+
+    h1 { font-size: 2.5rem; margin: 20px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); }
+    h2 { margin: 10px 0 20px; }
+
+    .section { width: 100%; display: flex; flex-direction: column; align-items: center; }
+    .hidden { display: none; }
+
+    .team {
+      background: rgba(255, 255, 255, 0.1);
       padding: 20px;
-    }
-
-    h1 {
-      margin: 15px 0;
-      font-size: 2.2rem;
+      border-radius: 12px;
+      margin-bottom: 25px;
+      backdrop-filter: blur(10px);
       text-align: center;
-      text-shadow: 2px 2px 6px rgba(0, 0, 0, 0.3);
     }
 
-    .controls {
-      margin: 15px 0;
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-      justify-content: center;
-    }
+    .team ul { list-style: none; padding: 0; margin: 0; }
+    .team li { padding: 6px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.3); }
 
-    button {
-      padding: 12px 18px;
+    .btn {
+      padding: 14px 24px;
+      margin-top: 20px;
+      background: linear-gradient(45deg, #00c6ff, #0072ff);
       border: none;
       border-radius: 10px;
-      background: linear-gradient(45deg, #ff512f, #dd2476);
       color: #fff;
-      font-size: 15px;
+      font-size: 18px;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
-      flex: 1 1 auto;
-      min-width: 130px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
     }
+    .btn:hover { transform: scale(1.08); background: linear-gradient(45deg, #0072ff, #00c6ff); }
 
-    button:hover {
-      transform: translateY(-3px) scale(1.05);
-      box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+    .social-icons { margin-top: 20px; display: flex; gap: 18px; justify-content: center; }
+    .social-icons a {
+      font-size: 22px;
+      text-decoration: none;
+      color: white;
+      background: rgba(255,255,255,0.2);
+      padding: 10px;
+      border-radius: 50%;
+      transition: 0.3s;
     }
+    .social-icons a:hover { background: rgba(255,255,255,0.4); transform: scale(1.2); }
 
+    /* Path Finder Styles */
+    .controls { margin: 15px 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
     .grid {
       display: grid;
       grid-template-columns: repeat(10, 45px);
@@ -65,132 +75,79 @@
       backdrop-filter: blur(10px);
       box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
     }
-
-    .cell {
-      width: 45px;
-      height: 45px;
-      background: rgba(255, 255, 255, 0.6);
-      border-radius: 8px;
-      cursor: pointer;
-      transition: background 0.3s, transform 0.2s;
-    }
-
-    .cell:hover {
-      transform: scale(1.05);
-      background: rgba(255, 255, 255, 0.8);
-    }
-
+    .cell { width: 45px; height: 45px; background: rgba(255,255,255,0.6); border-radius: 8px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    .cell:hover { transform: scale(1.05); background: rgba(255,255,255,0.8); }
     .cell.start { background: #4caf50 !important; }
     .cell.end { background: #f44336 !important; }
     .cell.path { background: #2196f3 !important; }
     .cell.wall { background: #111 !important; }
 
+    footer { margin-top: 30px; text-align: center; }
     @media (max-width: 600px) {
-      .grid {
-        grid-template-columns: repeat(10, 32px);
-        grid-template-rows: repeat(10, 32px);
-        padding: 10px;
-      }
-      .cell {
-        width: 32px;
-        height: 32px;
-      }
-    }
-
-    .team {
-      margin-top: 30px;
-      background: rgba(255, 255, 255, 0.15);
-      padding: 20px;
-      border-radius: 12px;
-      width: 80%;
-      max-width: 600px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-    }
-
-    .team h2 {
-      text-align: center;
-      margin-bottom: 15px;
-    }
-
-    .team ul {
-      list-style: none;
-      padding: 0;
-    }
-
-    .team li {
-      padding: 8px 0;
-      font-size: 16px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    footer {
-      margin-top: 30px;
-      text-align: center;
-    }
-
-    .social-icons {
-      display: flex;
-      justify-content: center;
-      gap: 15px;
-      margin-top: 10px;
-    }
-
-    .social-icons a {
-      text-decoration: none;
-      color: white;
-      font-size: 22px;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 10px;
-      border-radius: 50%;
-      transition: 0.3s;
-    }
-
-    .social-icons a:hover {
-      background: rgba(255, 255, 255, 0.4);
-      transform: scale(1.2);
+      .grid { grid-template-columns: repeat(10, 32px); grid-template-rows: repeat(10, 32px); padding: 10px; }
+      .cell { width: 32px; height: 32px; }
     }
   </style>
 </head>
 <body>
-  <h1>Shortest Path Finder with Obstacles</h1>
 
-  <div class="controls">
-    <button onclick="setMode('start')">Set Start</button>
-    <button onclick="setMode('end')">Set End</button>
-    <button onclick="setMode('wall')">Add Walls</button>
-    <button onclick="findPath()">Find Path</button>
-    <button onclick="resetGrid()">Reset</button>
-  </div>
+  <!-- Landing Section -->
+  <div id="landing" class="section">
+    <h1>🚀 Four Innovators</h1>
+    <h2>Shortest Path Finder Project</h2>
 
-  <div class="grid" id="grid"></div>
+    <div class="team">
+      <h3>👩‍💻 Team Members</h3>
+      <ul>
+        <li>✨ Ridhi Kundu — Reg No: 24BDE0171</li>
+        <li>🚀 Member 2 — Reg No: (Add Here)</li>
+        <li>🎯 Member 3 — Reg No: (Add Here)</li>
+      </ul>
+    </div>
 
-  <div class="team">
-    <h2>👨‍💻 Project Members</h2>
-    <ul>
-      <li>✨ Ridhi Kundu — Reg No: 24BDE0171</li>
-      <li>🚀 Member 2 — Reg No: (Add Here)</li>
-      <li>🎯 Member 3 — Reg No: (Add Here)</li>
-    </ul>
-  </div>
+    <button class="btn" onclick="showPathFinder()">Start Path Finder</button>
 
-  <footer>
-    <h3>Connect with us 🌐</h3>
     <div class="social-icons">
       <a href="https://facebook.com" target="_blank">📘</a>
       <a href="https://instagram.com" target="_blank">📸</a>
       <a href="https://linkedin.com" target="_blank">💼</a>
       <a href="https://github.com" target="_blank">🐙</a>
     </div>
-  </footer>
+  </div>
+
+  <!-- Path Finder Section -->
+  <div id="pathfinder" class="section hidden">
+    <div class="controls">
+      <button onclick="setMode('start')">Set Start</button>
+      <button onclick="setMode('end')">Set End</button>
+      <button onclick="setMode('wall')">Add Walls</button>
+      <button onclick="findPath()">Find Path</button>
+      <button onclick="resetGrid()">Reset</button>
+      <button onclick="backToLanding()">Back</button>
+    </div>
+
+    <div class="grid" id="grid"></div>
+  </div>
+
+  <footer>© 2025 Four Innovators | All Rights Reserved</footer>
 
   <script>
+    // Show Path Finder Section
+    function showPathFinder() {
+      document.getElementById("landing").classList.add("hidden");
+      document.getElementById("pathfinder").classList.remove("hidden");
+    }
+    function backToLanding() {
+      document.getElementById("pathfinder").classList.add("hidden");
+      document.getElementById("landing").classList.remove("hidden");
+    }
+
+    // Grid Setup
     const gridEl = document.getElementById("grid");
     const rows = 10, cols = 10;
     let mode = "start", start = null, end = null;
     let cells = [];
 
-    // Initialize grid
     for (let r = 0; r < rows; r++) {
       cells[r] = [];
       for (let c = 0; c < cols; c++) {
@@ -204,59 +161,41 @@
       }
     }
 
-    function setMode(m) {
-      mode = m;
-    }
-
+    function setMode(m) { mode = m; }
     function handleCellClick(r, c) {
       const cell = cells[r][c];
-
       if (mode === "start") {
         if (start) start.classList.remove("start");
         start = cell;
         start.classList.remove("wall");
         start.classList.add("start");
-      } 
-      else if (mode === "end") {
+      } else if (mode === "end") {
         if (end) end.classList.remove("end");
         end = cell;
         end.classList.remove("wall");
         end.classList.add("end");
-      } 
-      else if (mode === "wall") {
-        if (cell !== start && cell !== end) {
-          cell.classList.toggle("wall");
-        }
+      } else if (mode === "wall") {
+        if (cell !== start && cell !== end) cell.classList.toggle("wall");
       }
     }
 
     function findPath() {
-      if (!start || !end) {
-        alert("Set both start and end points first!");
-        return;
-      }
-
+      if (!start || !end) return alert("Set both start and end points first!");
       document.querySelectorAll(".path").forEach(cell => cell.classList.remove("path"));
-
       const startPos = [parseInt(start.dataset.row), parseInt(start.dataset.col)];
       const endPos = [parseInt(end.dataset.row), parseInt(end.dataset.col)];
-
       const queue = [[...startPos, []]];
       const visited = new Set();
       visited.add(startPos.toString());
 
       while (queue.length > 0) {
         const [r, c, path] = queue.shift();
-
         if (r === endPos[0] && c === endPos[1]) {
           path.forEach(([pr, pc]) => {
-            if (cells[pr][pc] !== start && cells[pr][pc] !== end) {
-              cells[pr][pc].classList.add("path");
-            }
+            if (cells[pr][pc] !== start && cells[pr][pc] !== end) cells[pr][pc].classList.add("path");
           });
           return;
         }
-
         const directions = [[1,0],[-1,0],[0,1],[0,-1]];
         for (let [dr, dc] of directions) {
           const nr = r + dr, nc = c + dc;
@@ -271,14 +210,12 @@
           }
         }
       }
-
       alert("No path found!");
     }
 
     function resetGrid() {
       cells.flat().forEach(cell => cell.className = "cell");
-      start = null;
-      end = null;
+      start = null; end = null;
     }
   </script>
 </body>
