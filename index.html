@@ -9,35 +9,35 @@
       font-family: "Segoe UI", sans-serif;
       margin: 0;
       min-height: 100vh;
-      background: linear-gradient(135deg, #ff512f, #dd2476);
-      color: #fff;
+      background: #121212; /* Dark professional background */
+      color: #e0e0e0;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    h1 { font-size: 2.5rem; margin: 20px 0; text-shadow: 2px 2px 6px rgba(0,0,0,0.3); }
-    h2 { margin: 10px 0 20px; }
+    h1 { font-size: 2.5rem; margin: 20px 0; color: #00bcd4; }
+    h2 { margin: 10px 0 20px; color: #80deea; }
 
     .section { width: 100%; display: flex; flex-direction: column; align-items: center; }
     .hidden { display: none; }
 
     .team {
-      background: rgba(255, 255, 255, 0.1);
+      background: #1f1f1f;
       padding: 20px;
       border-radius: 12px;
       margin-bottom: 25px;
-      backdrop-filter: blur(10px);
       text-align: center;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
     }
 
     .team ul { list-style: none; padding: 0; margin: 0; }
-    .team li { padding: 6px 0; font-size: 16px; border-bottom: 1px solid rgba(255,255,255,0.3); }
+    .team li { padding: 6px 0; font-size: 16px; border-bottom: 1px solid #333; }
 
     .btn {
       padding: 14px 24px;
       margin-top: 20px;
-      background: linear-gradient(45deg, #00c6ff, #0072ff);
+      background: linear-gradient(135deg, #00bcd4, #007c91);
       border: none;
       border-radius: 10px;
       color: #fff;
@@ -45,21 +45,22 @@
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+      box-shadow: 0 5px 15px rgba(0,0,0,0.5);
     }
-    .btn:hover { transform: scale(1.08); background: linear-gradient(45deg, #0072ff, #00c6ff); }
+    .btn:hover { transform: scale(1.08); background: linear-gradient(135deg, #007c91, #00bcd4); }
 
     .social-icons { margin-top: 20px; display: flex; gap: 18px; justify-content: center; }
     .social-icons a {
       font-size: 22px;
       text-decoration: none;
-      color: white;
-      background: rgba(255,255,255,0.2);
+      color: #00bcd4;
+      background: #1f1f1f;
       padding: 10px;
       border-radius: 50%;
       transition: 0.3s;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.4);
     }
-    .social-icons a:hover { background: rgba(255,255,255,0.4); transform: scale(1.2); }
+    .social-icons a:hover { background: #007c91; transform: scale(1.2); color: #fff; }
 
     /* Path Finder Styles */
     .controls { margin: 15px 0; display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
@@ -70,19 +71,18 @@
       gap: 4px;
       margin-top: 20px;
       padding: 15px;
-      background: rgba(255, 255, 255, 0.15);
+      background: #1f1f1f;
       border-radius: 15px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+      box-shadow: 0 6px 12px rgba(0, 0, 0, 0.5);
     }
-    .cell { width: 45px; height: 45px; background: rgba(255,255,255,0.6); border-radius: 8px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
-    .cell:hover { transform: scale(1.05); background: rgba(255,255,255,0.8); }
-    .cell.start { background: #4caf50 !important; }
-    .cell.end { background: #f44336 !important; }
-    .cell.path { background: #2196f3 !important; }
-    .cell.wall { background: #111 !important; }
+    .cell { width: 45px; height: 45px; background: #2c2c2c; border-radius: 8px; cursor: pointer; transition: background 0.3s, transform 0.2s; }
+    .cell:hover { transform: scale(1.05); background: #3a3a3a; }
+    .cell.start { background: #00bcd4 !important; }
+    .cell.end { background: #ff5722 !important; }
+    .cell.path { background: #4caf50 !important; }
+    .cell.wall { background: #555 !important; }
 
-    footer { margin-top: 30px; text-align: center; }
+    footer { margin-top: 30px; text-align: center; color: #888; }
     @media (max-width: 600px) {
       .grid { grid-template-columns: repeat(10, 32px); grid-template-rows: repeat(10, 32px); padding: 10px; }
       .cell { width: 32px; height: 32px; }
@@ -132,7 +132,6 @@
   <footer>© 2025 Four Innovators | All Rights Reserved</footer>
 
   <script>
-    // Show Path Finder Section
     function showPathFinder() {
       document.getElementById("landing").classList.add("hidden");
       document.getElementById("pathfinder").classList.remove("hidden");
